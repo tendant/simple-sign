@@ -16,6 +16,7 @@
            (org.bouncycastle.util.io.pem PemReader)
            (org.bouncycastle.openssl PEMParser)
            (javax.crypto Mac)
+           (java.util Base64)
            (javax.crypto.spec SecretKeySpec)))
 
 
@@ -41,6 +42,15 @@
 
 (def pubkey-file "test-keys/pubkey.pem")
 (def privkey-file "test-keys/privkey-open.pem")
+
+(defn base64-url-encode [bytes]
+  (-> (Base64/getUrlEncoder)
+      (.withoutPadding)
+      (.encode bytes)))
+
+(defn base64-url-decode [bytes]
+  (-> (Base64/getUrlDecoder)
+      (.decode bytes)))
 
 (defn load-pubkey [filename]
   (let [factory (KeyFactory/getInstance "RSA" "BC")
@@ -102,3 +112,14 @@
   [key string-to-verify signature]
   (and signature
        (= (hmac-sha1-sign key string-to-verify) signature)))
+
+(defn hmac-sha1-sign-no-padding
+  [key string-to-sign]
+  (-> (hmac-sha1 (string->us-ascii key) (string->us-ascii string-to-sign))
+      (base64-url-encode)
+      (us-ascii->string)))
+
+(defn hmac-sha1-verify-no-padding
+  [key string-to-verify signature]
+  (and signature
+       (= (hmac-sha1-sign-no-padding key string-to-verify) signature)))
