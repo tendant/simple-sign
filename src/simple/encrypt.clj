@@ -6,6 +6,10 @@
             [cheshire.core :as json])
   )
 
+(defn generate-iv
+  [len]
+  (nonce/random-bytes len))
+
 (defn hmac-sha256-encrypt
   [^String key
    ^bytes iv
