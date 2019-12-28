@@ -14,5 +14,5 @@
 ((deftest test-hmac-sha256-encrypt
   (testing "non-empty key, non-empty string-to-encrypt"
     (let [iv (buddy.core.nonce/random-bytes 16)]
-      (is (= "The quick brown fox jumps over the lazy dog" (hmac-sha156-decrypt "key" iv (hmac-sha256-encrypt "key" iv "The quick brown fox jumps over the lazy dog"))))))
+      (is (= "The quick brown fox jumps over the lazy dog" (hmac-sha256-decrypt "key" iv (hmac-sha256-encrypt "key" iv "The quick brown fox jumps over the lazy dog"))))))
    ))

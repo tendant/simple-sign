@@ -19,7 +19,7 @@
     (crypto/encrypt original-text key-bytes iv
                     {:algorithm :aes128-cbc-hmac-sha256})))
 
-(defn hmac-sha156-decrypt
+(defn hmac-sha256-decrypt
   [^String key
    ^bytes iv
    ^bytes encrypted-data]
